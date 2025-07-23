@@ -11,7 +11,11 @@ const Blog = () => {
   const {id} = useParams()
 
   const [data, setData]=useState(null)
+   
   const [comments, setComments] = useState([])
+  
+  const [name, setName]=useState('')
+  const [content, setContent]=useState('')
 
   const fetchBlogData = async()=> {
     const data = blog_data.find(item=> item._id === id)
@@ -20,6 +24,10 @@ const Blog = () => {
 
   const fetchComments =async ()=>{
     setComments(comments_data)
+  }
+
+  const addComment =async(e)=>{
+    e.preventDefault();
   }
 
   useEffect(()=>{
@@ -52,14 +60,33 @@ const Blog = () => {
         <img src={assets.user_icon} alt="" className='w-6'/>
         <p className='font-medium'>{item.name}</p>
       </div>
+
       <p className='text-sm max-w-md ml-8'>{item.content}</p>
+
       <div className='absolute right-4 bottom-3 flex items-center gap-2 text-xs'>{Moment(item.createdAt).fromNow()}</div>
       </div>
     ))}
   </div>
 </div>
 
-      </div>
+    
+
+    {/*Add comment section */}
+  <div className='max-w-3xl mx-auto'>
+   <p className='font-semibold mb-4'>Add your comment</p>
+    <form onSubmit={addComment} className='flex flex-col items-start gap-4 max-w-lg'>
+
+      <input onChange={(e)=> setName(e.target.value)} value={name} type="text" placeholder='Name' required className='w-full p-2 border border-gray-300 rounded outline-none' />
+
+      <textarea onChange={(e)=> setContent(e.target.value)} value={content} placeholder='Comment' className='w-full p-2 border border-gray-300 rounded outline-none h-48' required ></textarea>
+
+       <button type='submit' className='bg-primary text-white rounded p-2 px-8 hover:scale-102 transition-all cursor-pointer'>Submit</button>
+
+    </form>
+    </div>
+    <div>{/*share button */}</div>
+    </div>
+    
     </div>
   ) : <div>loading...</div>
 }
