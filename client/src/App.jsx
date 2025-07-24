@@ -17,7 +17,7 @@ const App = () => {
         <Route path="/blog/:id" element={<Blog />} />
         
         {/* Admin Layout with nested routes */}
-        <Route path="/admin" element={false ? <Layout /> : <Login/>}>
+        <Route path="/admin" element={true ? <Layout /> : <Login/>}>
           <Route index element={<Dashboard />} />
           <Route path="addBlog" element={<Addblog />} />
           <Route path="listblog" element={<Listblog />} />
