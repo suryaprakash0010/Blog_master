@@ -7,6 +7,7 @@ import Dashboard from './pages/admin/Dashboard'
 import Addblog from './pages/admin/Addblog'
 import Listblog from './pages/admin/Listblog'
 import Comments from './pages/admin/Comments'
+import Login from './components/admin/Login'
 
 const App = () => {
   return (
@@ -16,7 +17,7 @@ const App = () => {
         <Route path="/blog/:id" element={<Blog />} />
         
         {/* Admin Layout with nested routes */}
-        <Route path="/admin" element={<Layout />}>
+        <Route path="/admin" element={false ? <Layout /> : <Login/>}>
           <Route index element={<Dashboard />} />
           <Route path="addBlog" element={<Addblog />} />
           <Route path="listblog" element={<Listblog />} />
