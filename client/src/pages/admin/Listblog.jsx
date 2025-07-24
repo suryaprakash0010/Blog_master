@@ -2,7 +2,7 @@ import React from 'react'
 
 const Listblog = () => {
   return (
-    <div>Listblog</div>
+    <div></div>
   )
 }
 
