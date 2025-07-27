@@ -2,8 +2,9 @@ import jwt from "jsonwebtoken";
 
 const auth= (req,res,next) =>{
 
+    //const token= req.header.authorization;
     const token= req.header.authorization;
-
+ 
 
     try{
         jwt.verify(token, process.env.JWT_SECRET)
