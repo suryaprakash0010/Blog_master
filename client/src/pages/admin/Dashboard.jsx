@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { assets, dashboard_data } from '../../assets/assets'
 import BlogTableItem from '../../components/admin/BlogTableItem'
+import { useAppContext } from '../../context/AppContext'
 
 const Dashboard = () => {
 
@@ -11,8 +12,16 @@ const Dashboard = () => {
     recentBlogs:[]
   })
 
+  const {axios} = useAppContext()
+
   const fetchDashboard = async()=>{
-    setDashboardData(dashboard_data)
+    try {
+      const {data} = await axios.get('/api/admin/dashboard')
+      data.success ? setDashboardData(data.DashboardData) : toast.error(data.message)
+      
+    } catch (error) {
+      toast.error(error.message)
+    }
   }
 
   useEffect(()=>{
@@ -36,7 +45,8 @@ return (
           <img src={assets.dashboard_icon_2} alt="" />
         <div> 
         <p className='text-xl font-semibold text-gray-600'>
-          {DashboardData.comments}</p>
+           {DashboardData?.comments ?? 0}
+          </p>
         <p className='text-gray-400 font-light'>Comments</p>
         </div>
       </div>
@@ -45,7 +55,7 @@ return (
           <img src={assets.dashboard_icon_3} alt="" />
         <div> 
         <p className='text-xl font-semibold text-gray-600'>
-          {DashboardData.drafts}</p>
+        {DashboardData?.drafts ?? 0}</p>
         <p className='text-gray-400 font-light'>Drafts</p>
         </div>
          
@@ -71,10 +81,24 @@ return (
               </tr>
             </thead>
             <tbody>
-              {DashboardData.recentBlogs.map((blog,index)=>{
-                return <BlogTableItem key={blog._id} blog= {blog} fetchBlogs={fetchDashboard} index={index+1}/>
-              })}
-            </tbody>
+  {DashboardData?.recentBlogs?.length > 0 ? (
+    DashboardData.recentBlogs.map((blog, index) => (
+      <BlogTableItem
+        key={blog._id}
+        blog={blog}
+        fetchBlogs={fetchDashboard}
+        index={index + 1}
+      />
+    ))
+  ) : (
+    <tr>
+      <td colSpan="5" className="text-center text-gray-400 py-4">
+        No recent blogs found.
+      </td>
+    </tr>
+  )}
+   </tbody>
+
           </table>
         </div>
   </div>
