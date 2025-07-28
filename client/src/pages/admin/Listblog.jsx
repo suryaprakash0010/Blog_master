@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { toast } from 'react-toastify';
+import toast from "react-hot-toast";
 
 import { blog_data } from '../../assets/assets';
 import BlogTableItem from '../../components/admin/BlogTableItem';
@@ -15,7 +15,7 @@ const Listblog = () => {
   const fetchBlogs = async () =>{
 
     try {
-      const  {data} = await axios.get('/api/admin/blogs')
+      const  {data} = await axios.get('/api/blog/all');
       if(data.success){
         setBlogs(data.blogs)
       }

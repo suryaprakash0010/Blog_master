@@ -3,6 +3,9 @@ import imagekit from '../configs/imageKit.js';
 import Blog from '../models/Blog.js';
 
 export const addBlog = async(req,res)=>{
+    console.log("req.file:", req.file);
+    console.log("req.body:", req.body);
+
     try{
           const {title , subTitle , description,category,isPublished} =JSON.parse
           (req.body.blog);

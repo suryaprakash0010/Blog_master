@@ -5,7 +5,17 @@ import auth from "../middleware/auth.js";
 
 const blogRouter =express.Router();
 
-blogRouter.post("/add", upload.single('image'),auth, addBlog)
+// blogRouter.post("/add", upload.single('image'),auth, addBlog)
+// blogRouter.post("/add", auth, upload.single('image'), addBlog);
+blogRouter.post('/add', upload.single('image'), async (req, res) => {
+  const { title, content } = req.body;
+  const image = req.file?.filename;
+
+  // save title, content, and image filename to DB
+});
+
+
+
 blogRouter.get("/all", getAllBlogs);
 blogRouter.get("/:blogId", getBlogById);
 blogRouter.post("/delete", deleteBlogById);

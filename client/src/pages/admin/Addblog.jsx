@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { assets, blogCategories } from '../../assets/assets'
 import Quill from 'quill';
-import { toast } from 'react-toastify';
+import toast from "react-hot-toast";
+import { useNavigate } from 'react-router-dom';
+
 
 import { useAppContext } from '../../context/AppContext';
 
@@ -25,43 +27,96 @@ const Addblog = () => {
         
       }
 
-      const onSubmitHandler = async(e)=>{
+      const onSubmitHandler= async () => {
+  if (!title || !image || !content) {
+    toast.error("All fields are required");
+    return;
+  }
 
-        try {
-          e.preventDefault();
-          setIsAdding(true)
+  setIsAdding(true);
 
-          const blog={
-            title, subTitle , 
-            description :quillRef.current.root.innerHTML, 
-            category, isPublished 
-          }
+  try {
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("content", content);
+    formData.append("image", image); // real file object
 
-          const formData = new FormData();
-          formData.append('blog', JSON.stringify(blog))
-          formData.append('image', image)
+    const response = await axios.post("/api/blog/add", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
 
-         const {data} = await axios.post('/api/blog/add' , formData);
+    if (response.data.success) {
+      toast.success("Blog Added");
+      setTitle("");
+      setImage("");
+      setContent("");
+      navigate("/admin/blogs");
+    } else {
+      toast.error("Failed to add blog");
+    }
+  } catch (error) {
+    toast.error("Error while adding blog");
+    console.error(error);
+  }
 
-         if(data.success){
-          toast.success(data.message);
-          setImage(false)
-          setTitle('')
-          quillRef.current.root.innerHTML =''
-          setCategory('Startup')
-         }
-         else{
-          toast.error(data.message)
-         }
+  setIsAdding(false);
+};
 
-        } catch (error) {
-          toast.error(error.message)
-        }
-        finally{
-          setIsAdding(false)
-        }
+//       const onSubmitHandler = async(e)=>{
+
+//          e.preventDefault();
+//           setIsAdding(true)
+//         try {
+        
+//           const blog={
+//             title, subTitle , 
+//             description :quillRef.current.root.innerHTML, 
+//             category, isPublished 
+//           }
+
+//           const formData = new FormData();
+//           formData.append('blog', JSON.stringify(blog))
+//           formData.append('image', image)
+
+//         //  const {data} = await axios.post('/api/blog/add' , formData);/
+//          const token = localStorage.getItem("token");
+
+// const { data } = await axios.post('/api/blog/add', formData, {
+//   headers: {
+//     'Authorization': token,
+//   },
+// });
+
+
+
+
+//          if(data.success){
+//           toast.success(data.message);
+//           setImage(false);
+//           setTitle('');
+//           setSubTitle('');
+//           quillRef.current.root.innerHTML ='';
+//           setCategory('Startup');
+//           setIsPublished(false);
+//           navigate('/admin/blogs');
+//          }
+//          else{
+//           toast.error(data.message)
+//          }
+
+//         } catch (error) {
+//             console.error("Add blog error:", error);
+//           // toast.error(error.message)
+//             toast.error(error?.response?.data?.message || "Something went wrong");
+
+//         }
+//         finally{
+//           setIsAdding(false)
+//         }
          
-      }
+//       }
 
       useEffect(()=>{
 
@@ -77,7 +132,7 @@ const Addblog = () => {
           <p>Upload thumbnail</p>
           <label htmlFor="image">
               <img src={!image ? assets.upload_area :URL.createObjectURL(image)} alt="" className='mt-2 h-16 rounded cursor-pointer' />
-      <input  onChange={(e)=> setImage(e.target.files[0])} type="file" id='image' hidden required />
+      <input  onChange={(e)=> setImage(e.target.files[0])} type="file" accept="image/*" id='image' hidden required />
     </label>
 
     <p>Blog title</p>
