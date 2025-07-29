@@ -7,8 +7,9 @@ import {blog_data} from '../assets/assets'
 import { comments_data } from '../assets/assets'
 import Footer from '../components/Footer'
 import Loader from '../components/Loader'
-import { useAppContext } from '../context/AppContext'
-import toast from 'react-hot-toast'
+import { useAppContext } from '../context/AppContext' 
+import { toast } from 'react-hot-toast';
+
 
 const Blog = () => {
 
@@ -33,27 +34,27 @@ const Blog = () => {
     }
   }
 
-  const fetchComments =async ()=>{
-   
-    try {
-       const {data} = await axios.post('/api/blog/comments' , {blogId : id})
-       if(data.success){
-        setComments(data.comments)
-       }
-       else{
-        toast.error(data.message);
-       }
-    } catch (error) {
-              toast.error(error.message);
-
+ const fetchComments = async () => {
+  try {
+    const { data } = await axios.get(`/api/blog/comments/${id}`);
+    console.log('Server response:', data);
+    if (data.success) {
+      setComments(data.comments);
+    } else {
+      toast.error(data.message);
     }
+  } catch (error) {
+    toast.error(error.message);
   }
+};
+
 
   const addComment =async(e)=>{
     e.preventDefault();
 
     try {
              const {data} = await axios.post('/api/blog/add-comments' , {blog : id,name ,content});
+             console.log('Server response:', data);
               if(data.success){
 toast.success(data.message)      
 setName('')

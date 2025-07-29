@@ -9,7 +9,8 @@ import Listblog from './pages/admin/Listblog'
 import Comments from './pages/admin/Comments'
 import Login from './components/admin/Login'
 import 'quill/dist/quill.snow.css'
-import {Toaster} from 'react-hot-toast'
+import { toast } from 'react-hot-toast';
+
 import { useAppContext } from './context/AppContext'
 
 const App = () => {

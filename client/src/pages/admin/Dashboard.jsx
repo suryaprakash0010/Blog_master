@@ -5,12 +5,7 @@ import { useAppContext } from '../../context/AppContext'
 
 const Dashboard = () => {
 
-  const [DashboardData, setDashboardData]=useState({
-    blogs: 0, 
-    comments:0,
-    drafts:0,
-    recentBlogs:[]
-  })
+  const [DashboardData, setDashboardData]=useState(null);
 
   const {axios} = useAppContext()
 
@@ -20,6 +15,8 @@ const Dashboard = () => {
       data.success ? setDashboardData(data.DashboardData) : toast.error(data.message)
       
     } catch (error) {
+            console.error('Error fetching dashboard:', error);
+
       toast.error(error.message)
     }
   }

@@ -1,6 +1,7 @@
 import fs from 'fs'
 import imagekit from '../configs/imageKit.js';
 import Blog from '../models/Blog.js';
+import Comment from '../models/Comment.js';
 
 export const addBlog = async(req,res)=>{
     console.log("req.file:", req.file);
@@ -113,6 +114,7 @@ export const addComment = async (req,res) =>{
 
     try{
     const {blog,name ,content} =req.body;
+     console.log('Received comment:', blog, name, content);
 await Comment.create({blog, name,content});
 res.json({success: true , message: 'Comment added for review'})
     } catch(error) {
@@ -120,6 +122,16 @@ res.json({success: true , message: 'Comment added for review'})
 
     }
 }
+
+export const getComments = async (req, res) => {
+  try {
+    const comments = await Comment.find({ blog: req.params.id });
+    res.json({ success: true, comments });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
 
 
 export const getBlogComments = async (req,res) =>{
