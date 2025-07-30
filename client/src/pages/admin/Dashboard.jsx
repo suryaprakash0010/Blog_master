@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { assets, dashboard_data } from '../../assets/assets'
 import BlogTableItem from '../../components/admin/BlogTableItem'
 import { useAppContext } from '../../context/AppContext'
+import toast from 'react-hot-toast';
+
 
 const Dashboard = () => {
 
@@ -11,13 +13,16 @@ const Dashboard = () => {
 
   const fetchDashboard = async()=>{
     try {
-      const {data} = await axios.get('/api/admin/dashboard')
-      data.success ? setDashboardData(data.DashboardData) : toast.error(data.message)
+      const {data} = await axios.get('/api/admin/dashboard');
+      data.success ? setDashboardData(data.DashboardData) : toast.error
+      (data.message)
       
     } catch (error) {
-            console.error('Error fetching dashboard:', error);
+            // console.error('Error fetching dashboard:', error);
 
-      toast.error(error.message)
+      // toast.error(error.message)
+             toast.error(error?.response?.data?.message || error.message);
+
     }
   }
 

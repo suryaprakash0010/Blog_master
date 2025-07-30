@@ -10,7 +10,8 @@ const app = express();
 
 await connectDB()
 
-app.use(cors())
+// app.use(cors())
+app.use(cors({ origin: '*', credentials: true }));
 app.use(express.json())
 
 app.use('/uploads', express.static('uploads'));
@@ -18,6 +19,9 @@ app.use('/uploads', express.static('uploads'));
 app.get('/',(req,res)=> res.send("API is Working"))
 app.use('/api/admin' , adminRouter)
 app.use('/api/blog' , blogRouter)
+
+app.use(express.urlencoded({ extended: true }));
+
 
 const PORT = process.env.PORT || 3000;
 

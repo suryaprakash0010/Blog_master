@@ -16,6 +16,11 @@ export const AppProvider = ({ children }) =>{
     const navigate = useNavigate()
 
     const [token, setToken] =useState(null)
+    const saveToken = (token) => {
+  localStorage.setItem("token", token);
+  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  setToken(token); // update state
+};
     const [blogs, setBlogs] =useState(null)
     const [input, setInput] =useState("")
 
@@ -30,17 +35,21 @@ export const AppProvider = ({ children }) =>{
     }
     
 
+  
+
     useEffect(()=>{
         fetchBlogs();
-        const token = localStorage.getItem('token')
+        const token = localStorage.getItem('token');
         if(token){
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
             setToken(token);
-            axios.defaults.headers.common['Authorization'] = `${token}`;
+            fetchBlogs();
+            // axios.defaults.headers.common['Authorization'] = `${token}`;
         }
     },[])
 
      const value = {
-        axios ,navigate, token , setToken, blogs ,setBlogs, input, setInput  
+        axios ,navigate, token , setToken: saveToken, blogs ,setBlogs, input, setInput , fetchBlogs
      }
     return (
 

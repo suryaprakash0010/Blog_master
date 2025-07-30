@@ -17,7 +17,7 @@ const Addblog = () => {
         const editorRef =useRef(null)
         const quillRef =useRef(null)
 
-      const [image,setImage]=useState(false);
+      const [image,setImage]=useState(null);
       const [title,setTitle]=useState('');
       const [subTitle,setSubTitle]=useState('');
       const [isPublished,setIsPublished]=useState(false);
@@ -47,96 +47,73 @@ const Addblog = () => {
         
       }
 
-      const onSubmitHandler= async () => {
-  if (!title || !image || !content) {
-    toast.error("All fields are required");
-    return;
-  }
+      
 
-  setIsAdding(true);
+      const onSubmitHandler = async(e)=>{
 
-  try {
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("content", content);
-    formData.append("image", image); // real file object
-
-    const response = await axios.post("/api/blog/add", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-
-    if (response.data.success) {
-      toast.success("Blog Added");
-      setTitle("");
-      setImage("");
-      setContent("");
-      navigate("/admin/blogs");
-    } else {
-      toast.error("Failed to add blog");
-    }
-  } catch (error) {
-    toast.error("Error while adding blog");
-    console.error(error);
-  }
-
-  setIsAdding(false);
-};
-
-//       const onSubmitHandler = async(e)=>{
-
-//          e.preventDefault();
-//           setIsAdding(true)
-//         try {
+         e.preventDefault();
+          setIsAdding(true)
+        try {
         
-//           const blog={
-//             title, subTitle , 
-//             description :quillRef.current.root.innerHTML, 
-//             category, isPublished 
-//           }
+          const blog={
+            title, subTitle , 
+            description :quillRef.current.root.innerHTML, 
+            category, isPublished 
+          }
 
-//           const formData = new FormData();
-//           formData.append('blog', JSON.stringify(blog))
-//           formData.append('image', image)
+          const formData = new FormData();
+          formData.append('blog', JSON.stringify(blog))
+          formData.append('image', image)
 
-//         //  const {data} = await axios.post('/api/blog/add' , formData);/
-//          const token = localStorage.getItem("token");
+        //  const {data} = await axios.post('/api/blog/add' , formData);/
+         const token = localStorage.getItem("token");
 
-// const { data } = await axios.post('/api/blog/add', formData, {
-//   headers: {
-//     'Authorization': token,
-//   },
-// });
+         console.log({
+  title,
+  subTitle,
+  html: quillRef.current.root.innerHTML,
+  image,
+  category,
+  isPublished
+});
+
+
+ const { data } = await axios.post('/api/admin/blog/add', formData, {
+  headers: {
+    'Authorization': token,
+    'Content-Type': 'multipart/form-data' 
+  }
+});
 
 
 
 
-//          if(data.success){
-//           toast.success(data.message);
-//           setImage(false);
-//           setTitle('');
-//           setSubTitle('');
-//           quillRef.current.root.innerHTML ='';
-//           setCategory('Startup');
-//           setIsPublished(false);
-//           navigate('/admin/blogs');
-//          }
-//          else{
-//           toast.error(data.message)
-//          }
+         if(data.success){
+          toast.success(data.message);
+          setImage(false);
+          setTitle('');
+          setSubTitle('');
+          quillRef.current.root.innerHTML ='';
+          setCategory('Startup');
+          setIsPublished(false);
+         fetchBlogs();
+navigate('/admin/blogs');
+         }
+         else{
+          toast.error(data.message)
+         }
 
-//         } catch (error) {
-//             console.error("Add blog error:", error);
-//           // toast.error(error.message)
-//             toast.error(error?.response?.data?.message || "Something went wrong");
+        } catch (error) {
+            console.error("Add blog error:", error);
+          // toast.error(error.message)
+            toast.error(error?.response?.data?.message || "Something went wrong");
 
-//         }
-//         finally{
-//           setIsAdding(false)
-//         }
-         
-//       }
+        }
+        finally{
+          setIsAdding(false)
+        }
+      
+      }
 
       useEffect(()=>{
 
