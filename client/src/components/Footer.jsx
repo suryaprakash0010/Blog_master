@@ -6,7 +6,7 @@ const Footer = () => {
     <div className='px-6 md:px-16 lg:px-24 xl:px-32 bg-primary/3'>
       <div className='flex flex-col md:flex-row items-start justify-between gap-10 py-10 border-b border-gray-500/30 text-gray-500'>
         <div>
-          <img src={assets.logo} alt="logo" className='w-32 sm:w-44' />
+          <img src={assets.logo} alt="logo" className='w-55 sm:w-65' />
           <p className='max-w-[410px] mt-6'>This is a full-stack blog website created by Surya Prakash Kahar, featuring admin login, blog posting, comment moderation, and Gemini AI-powered blog generation using the MERN stack.
           </p>
         </div>

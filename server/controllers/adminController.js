@@ -3,6 +3,7 @@ import Blog from "../models/Blog.js";
 import Comment from "../models/Comment.js";
 
 export const adminLogin = async (req, res) => {
+    
     try {
         const { email, password } = req.body;
 
@@ -18,6 +19,7 @@ export const adminLogin = async (req, res) => {
 }
 
 export const getAllBlogsAdmin = async (req, res) => {
+
     try {
         const blogs = await Blog.find({}).sort({ createdAt: -1 });
         res.json({ success: true, blogs });
@@ -27,6 +29,7 @@ export const getAllBlogsAdmin = async (req, res) => {
 }
 
 export const getAllComments = async (req, res) => {
+
     try {
         const comments = await Comment.find({}).sort({ createdAt: -1 }).populate('blog');
         res.json({ success: true, comments });
@@ -36,6 +39,7 @@ export const getAllComments = async (req, res) => {
 }
 
 export const getDashboard = async (req, res) => {
+
     try {
         const recentBlogs = await Blog.find({}).sort({ createdAt: -1 }).limit(5);
         const blogs = await Blog.countDocuments();
@@ -55,6 +59,7 @@ export const getDashboard = async (req, res) => {
 }
 
 export const deleteCommentById = async (req, res) => {
+
     try {
         const { id } = req.body;
         await Comment.findByIdAndDelete(id);
@@ -65,6 +70,7 @@ export const deleteCommentById = async (req, res) => {
 }
 
 export const approveCommentById = async (req, res) => {
+
     try {
         const { id } = req.body;
         await Comment.findByIdAndUpdate(id, { isApproved: true });
