@@ -5,7 +5,7 @@ import { useAppContext } from '../../context/AppContext';
 import toast from 'react-hot-toast';
 import { parse } from 'marked';
 
-const Addblog = () => {
+const AddBlog = () => {
 
   const { axios, fetchBlogs } = useAppContext();
   const [isAdding, setIsAdding] = useState(false);
@@ -130,4 +130,4 @@ const Addblog = () => {
   )
 }
 
-export default Addblog
+export default AddBlog
