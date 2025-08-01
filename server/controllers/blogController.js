@@ -4,7 +4,7 @@ import Blog from '../models/Blog.js';
 import Comment from '../models/Comment.js';
 import main from '../configs/gemini.js';
 
-export const addBlog = async (req, res) => {
+export const addblog = async (req, res) => {
     try {
         const { title, subTitle, description, category, isPublished } = JSON.parse(req.body.blog);
         const imageFile = req.file;

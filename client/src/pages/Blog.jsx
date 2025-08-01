@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router'
+import { useParams } from 'react-router-dom'
 import { assets } from '../assets/assets';
 import Navbar from '../components/Navbar';
 import moment from 'moment';

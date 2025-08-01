@@ -1,11 +1,11 @@
 import React from 'react';
-import { Route, Routes } from 'react-router';
+import { Route, Routes } from 'react-router-dom';
 import Home from './pages/Home';
 import Blog from './pages/Blog';
 import Layout from './pages/admin/Layout';
 import Dashboard from './pages/admin/Dashboard';
-import AddBlog from './pages/admin/Addblog';
-import ListBlog from './pages/admin/ListBlog';
+import Addblog from './pages/admin/Addblog';
+import Listblog from './pages/admin/Listblog';
 import Comments from './pages/admin/Comments';
 import Login from './components/admin/Login';
 import 'quill/dist/quill.snow.css';
@@ -24,8 +24,8 @@ const App = () => {
         <Route path="/blog/:id" element={<Blog />} />
         <Route path='/admin' element={token ? <Layout /> : <Login />}>
           <Route index element={<Dashboard />} />
-          <Route path='addBlog' element={<AddBlog />} />
-          <Route path='listBlog' element={<ListBlog />} />
+          <Route path='addblog' element={<Addblog />} />
+          <Route path='listBlog' element={<Listblog />} />
           <Route path='comments' element={<Comments />} />
         </Route>
       </Routes>
