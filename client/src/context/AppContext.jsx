@@ -1,66 +1,56 @@
-import { useContext, useEffect, useState } from "react"
-import { createContext } from "react"
-import axios from "axios";
-import {useNavigate} from 'react-router-dom'
-import { toast } from 'react-hot-toast';
-
+import { createContext, useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router'
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
-
 const AppContext = createContext();
 
+export const AppProvider = ({ children }) => {
 
-export const AppProvider = ({ children }) =>{
+    const navigate = useNavigate();
 
-    const navigate = useNavigate()
+    const [token, setToken] = useState(null);
+    const [blogs, setBlogs] = useState([]);
+    const [input, setInput] = useState("");
 
-    const [token, setToken] =useState(null)
-    const saveToken = (token) => {
-  localStorage.setItem("token", token);
-  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-  setToken(token); // update state
-};
-    const [blogs, setBlogs] =useState(null)
-    const [input, setInput] =useState("")
-
-    const fetchBlogs = async ()=>{
+    const fetchBlogs = async () => {
         try {
             const { data } = await axios.get('/api/blog/all');
-            data.success ? setBlogs(data.blogs) : toast.error(data.message)
+            data.success ? setBlogs(data.blogs) : toast.error(data.message);
         } catch (error) {
-            toast.error(error.message)
-            
+            toast.error(error.message);
         }
     }
-    
 
-  
-
-    useEffect(()=>{
+    useEffect(() => {
         fetchBlogs();
         const token = localStorage.getItem('token');
-        if(token){
-            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        if (token) {
             setToken(token);
-            fetchBlogs();
-            // axios.defaults.headers.common['Authorization'] = `${token}`;
+            axios.defaults.headers.common['Authorization'] = `${token}`;
         }
-    },[])
+    }, []); const value = {
+        token,
+        setToken,
+        blogs,
+        setBlogs,
+        input,
+        setInput,
+        navigate,
+        axios,
+        fetchBlogs
+    };
 
-     const value = {
-        axios ,navigate, token , setToken: saveToken, blogs ,setBlogs, input, setInput , fetchBlogs
-     }
     return (
-
-        
-
         <AppContext.Provider value={value}>
-            { children }
+            {children}
         </AppContext.Provider>
-    )
+    );
 }
 
-export const useAppContext = ()=>{
-return useContext (AppContext);
-};
+// eslint-disable-next-line react-refresh/only-export-components
+export const useAppContext = () => {
+    return useContext(AppContext);
+}
