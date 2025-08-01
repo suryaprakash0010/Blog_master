@@ -4,10 +4,10 @@ const Newsletter = () => {
   const [subscribed, setSubscribed] = useState(false);
 
   const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent page reload
+    e.preventDefault(); 
     setSubscribed(true);
 
-    // Hide message after 3 seconds
+    
     setTimeout(() => {
       setSubscribed(false);
     }, 3000);

@@ -50,7 +50,7 @@ const Blog = () => {
                 toast.success(data.message);
                 setName('');
                 setContent('');
-                // Refresh comments to show the new comment if it's approved
+                
                 fetchComments();
             } else {
                 toast.error(data.message);
@@ -63,7 +63,7 @@ const Blog = () => {
     useEffect(() => {
         fetchBlogData();
         fetchComments();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        
     }, [])
 
     return data ? (
@@ -82,7 +82,7 @@ const Blog = () => {
                 <div className='rich-text max-w-3xl mx-auto' dangerouslySetInnerHTML={{ __html: data.description }}>
 
                 </div>
-                {/* Comment Section */}
+               
                 <div className='mt-14 mb-10 max-w-3xl mx-auto'>
                     <p className='font-semibold mb-4'>Comments ({comments.length})</p>
                     <div className='flex flex-col gap-4'>
@@ -99,7 +99,7 @@ const Blog = () => {
                     </div>
                 </div>
 
-                {/* Comment Form */}
+               
                 <div className='max-w-3xl mx-auto'>
                     <p className='font-semibold mb-4'>Add your comment</p>
                     <form onSubmit={addComment} className='flex flex-col items-start gap-4 max-w-lg'>
@@ -109,7 +109,7 @@ const Blog = () => {
                     </form>
                 </div>
 
-                {/* Share Buttons */}
+                
                 <div className='my-24 max-w-3xl mx-auto'>
                     <p className='font-semibold my-4'>Share this article on social media</p>
                     <div className='flex'>

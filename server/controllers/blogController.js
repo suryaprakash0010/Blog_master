@@ -9,21 +9,21 @@ export const addBlog = async (req, res) => {
         const { title, subTitle, description, category, isPublished } = JSON.parse(req.body.blog);
         const imageFile = req.file;
 
-        // Check if all required fields are provided
+        
         if (!title || !description || !category || !imageFile) {
             return res.json({ success: false, message: 'All fields are required' });
         }
 
         const fileBuffer = fs.readFileSync(imageFile.path);
 
-        // Upload the image to ImageKit
+        
         const response = await imagekit.upload({
             file: fileBuffer,
             fileName: imageFile.originalname,
             folder: '/blogs'
         })
 
-        // Optimization through imagekit URL transformation
+        
         const optimizedImageUrl = imagekit.url({
             path: response.filePath,
             transformation: [
@@ -74,7 +74,7 @@ export const deleteBlogById = async (req, res) => {
         const { id } = req.body;
         await Blog.findByIdAndDelete(id);
 
-        // Delete all comments associated with the blog
+        
         await Comment.deleteMany({ blog: id });
 
         res.json({ success: true, message: 'Blog deleted successfully' });

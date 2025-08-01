@@ -62,7 +62,7 @@ const AddBlog = () => {
         quillRef.current.root.innerHTML = '';
         setCategory('Startup');
         setIsPublished(false);
-        // Refresh the blogs list in context so homepage shows new data
+        
         fetchBlogs();
       } else {
         toast.error(data.message);
