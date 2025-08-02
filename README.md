@@ -225,7 +225,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 - 📧 Email: [sp2002rk@gmail.com](mailto:sp2002rk@gmail.com)
 - 💼 LinkedIn: [www.linkedin.com/in/surya--prakash--kahar](https://www.linkedin.com/in/surya--prakash--kahar)
-- 🌐 Live Demo: []()
+- 🌐 Live Demo: [https://blog-master-sand.vercel.app/](https://blog-master-sand.vercel.app/)
 
 
 ## 🙏 Acknowledgments
