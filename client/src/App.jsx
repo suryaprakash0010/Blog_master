@@ -4,7 +4,7 @@ import Home from './pages/Home';
 import Blog from './pages/Blog';
 import Layout from './pages/admin/Layout';
 import Dashboard from './pages/admin/Dashboard';
-import ListBlog from './pages/admin/ListBlog';
+import ListBlog from './pages/admin/ListingBlog';
 import Comments from './pages/admin/Comments';
 import Login from './components/admin/Login';
 import 'quill/dist/quill.snow.css';
