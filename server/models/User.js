@@ -14,16 +14,16 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    unique: true,
     lowercase: true,
     trim: true
+    // unique: true ❌ Removed to allow overwrite or duplicates
   },
   password: {
     type: String,
     required: true
   }
 }, {
-  timestamps: true // Adds createdAt and updatedAt fields
+  timestamps: true // Adds createdAt and updatedAt
 });
 
 const User = mongoose.model('User', userSchema);

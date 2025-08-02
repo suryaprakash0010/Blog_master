@@ -35,29 +35,34 @@ export const adminLogin = async (req, res) => {
     }
 }
 export const adminSignup = async (req, res) => {
-  try {
+
+try {
     const { email, password, firstName, lastName } = req.body;
 
     if (!email || !password || !firstName || !lastName) {
       return res.status(400).json({ success: false, message: 'All fields are required' });
     }
 
-    const user = await User.findOne({ email });
-    if (user) {
-      return res.status(409).json({ success: false, message: 'User already exists' });
-    }
-
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = await User.create({ email, password: hashedPassword, firstName, lastName });
 
-    if (!newUser) {
-      return res.status(500).json({ success: false, message: 'User creation failed' });
-    }
+    const user = await User.findOneAndUpdate(
+      { email },
+      {
+        firstName,
+        lastName,
+        email,
+        password: hashedPassword,
+      },
+      {
+        upsert: true,
+        new: true,    
+        setDefaultsOnInsert: true,
+      }
+    );
 
     const token = jwt.sign({ email }, process.env.JWT_SECRET);
     res.setHeader('Authorization', token);
-    return res.status(201).json({ success: true, token, message: 'User created successfully' });
-
+    return res.status(201).json({ success: true, token, message: 'Signup successful', user });
   } catch (error) {
     console.error("Server error:", error);
     return res.status(500).json({ success: false, message: error.message });
