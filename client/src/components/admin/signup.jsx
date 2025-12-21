@@ -4,6 +4,10 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useAppContext } from "../../context/AppContext";
 import { useNavigate } from "react-router-dom";
+import Login from "./Login";
+import { Link } from 'react-router-dom';
+
+
 
 const Signup = () => {
   const {
@@ -120,7 +124,22 @@ const handleSignup = async (data) => {
           >
             Sign Up
           </button>
+
+
+
         </form>
+         
+         <p className="mt-4 text-sm text-center text-gray-600">
+    Already have an account?{' '}
+    <Link
+        to="/login"
+        className="text-primary font-medium hover:underline"
+    >
+        Login
+    </Link>
+</p>
+         
+        
       </div>
     </div>
   );

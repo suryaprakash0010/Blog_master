@@ -4,13 +4,13 @@ import Home from "./pages/Home";
 import Blog from "./pages/Blog";
 import Layout from "./pages/admin/Layout";
 import Dashboard from "./pages/admin/Dashboard";
-import ListBlog from "./pages/admin/ListingBlog";
+import ListBlog from "./pages/admin/ListBlog";
 import Comments from "./pages/admin/Comments";
 import Login from "./components/admin/Login";
 import "quill/dist/quill.snow.css";
 import { Toaster } from "react-hot-toast";
 import { useAppContext } from "./context/AppContext";
-import AddBlog from "./pages/admin/AddingBlog";
+import AddBlog from "./pages/admin/AddBlog";
 import Signup from "./components/admin/signup";
 
 const App = () => {
@@ -23,6 +23,8 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/blog/:id" element={<Blog />} />
         <Route path="/signup" element={token ? <Layout /> : <Signup />} />
+
+        <Route path="/login" element={<Login />} />
 
         <Route path="/admin" element={token ? <Layout /> : <Login />}>
           <Route index element={<Dashboard />} />

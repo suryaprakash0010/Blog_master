@@ -34,6 +34,7 @@ export const adminLogin = async (req, res) => {
         return res.json({ success: false, message: error.message });
     }
 }
+
 export const adminSignup = async (req, res) => {
 
 try {
