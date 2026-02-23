@@ -17,7 +17,7 @@ const auth = (req, res, next) => {
     }
 }
 
-const adminAuth = (req, res, next) => {
+const adminAuth = async (req, res, next) => {
     const token = req.headers.authorization;
 
     if (!token) {
@@ -27,13 +27,12 @@ const adminAuth = (req, res, next) => {
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         
-        User.findById(decoded.id).then(user => {
-            if (!user || user.role !== 'admin') {
-                return res.json({ success: false, message: 'Admin access required' });
-            }
-            req.user = decoded;
-            next();
-        });
+        const user = await User.findById(decoded.id);
+        if (!user || user.role !== 'admin') {
+            return res.json({ success: false, message: 'Admin access required' });
+        }
+        req.user = decoded;
+        next();
     } catch (error) {
         res.json({ success: false, message: 'Invalid token' });
     }

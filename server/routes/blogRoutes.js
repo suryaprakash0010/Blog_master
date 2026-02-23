@@ -5,13 +5,20 @@ import { auth, adminAuth } from '../middleware/auth.js';
 
 const blogRouter = express.Router();
 
-blogRouter.post('/add', upload.single('image'), adminAuth);
+// Public routes
 blogRouter.get('/all', getAllBlogs);
 blogRouter.get('/:blogId', getBlogById);
-blogRouter.post('/delete', adminAuth, deleteBlogById);
-blogRouter.post('/toggle-publish', adminAuth, togglePublish);
+
+// Comment routes
 blogRouter.post('/add-comment', addComment);
 blogRouter.post('/comments', getBlogComments);
+
+// Protected routes
 blogRouter.post('/generate', auth, generateContent);
+
+// Admin only routes
+blogRouter.post('/add', upload.single('image'), adminAuth, addBlog);
+blogRouter.post('/delete', adminAuth, deleteBlogById);
+blogRouter.post('/toggle-publish', adminAuth, togglePublish);
 
 export default blogRouter;
