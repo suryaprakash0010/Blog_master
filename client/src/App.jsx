@@ -6,15 +6,16 @@ import Layout from "./pages/admin/Layout";
 import Dashboard from "./pages/admin/Dashboard";
 import ListBlog from "./pages/admin/ListBlog";
 import Comments from "./pages/admin/Comments";
-import Login from "./components/admin/Login";
+import Auth from "./components/Auth";
+import UserDashboard from "./pages/user/UserDashboard";
+import CreateAdmin from "./components/admin/CreateAdmin";
 import "quill/dist/quill.snow.css";
 import { Toaster } from "react-hot-toast";
 import { useAppContext } from "./context/AppContext";
 import AddBlog from "./pages/admin/AddBlog";
-import Signup from "./components/admin/signup";
 
 const App = () => {
-  const { token } = useAppContext();
+  const { token, user } = useAppContext();
 
   return (
     <div>
@@ -22,11 +23,11 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/blog/:id" element={<Blog />} />
-        <Route path="/signup" element={token ? <Layout /> : <Signup />} />
+        <Route path="/auth" element={!token ? <Auth /> : (user?.role === 'admin' ? <Layout /> : <UserDashboard />)} />
+        <Route path="/dashboard" element={!token ? <Auth /> : (user?.role === 'admin' ? <Layout /> : <UserDashboard />)} />
+        <Route path="/create-admin" element={<CreateAdmin />} />
 
-        <Route path="/login" element={<Login />} />
-
-        <Route path="/admin" element={token ? <Layout /> : <Login />}>
+        <Route path="/admin" element={token && user?.role === 'admin' ? <Layout /> : <Auth />}>
           <Route index element={<Dashboard />} />
           <Route path="addBlog" element={<AddBlog />} />
           <Route path="listBlog" element={<ListBlog />} />

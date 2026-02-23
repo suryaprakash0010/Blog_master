@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { assets } from '../../assets/assets'
 import BlogTableItem from '../../components/admin/BlogTableItem'
+import Loader from '../../components/Loader'
 import { useAppContext } from '../../context/AppContext'
 import toast from 'react-hot-toast'
 
 const Dashboard = () => {
 
+  const [loading, setLoading] = useState(false);
   const [dashboardData, setDashboardData] = useState({
     blogs: 0,
     comments: 0,
@@ -16,11 +18,14 @@ const Dashboard = () => {
   const {axios} = useAppContext()
 
   const fetchDashboard = async () => {
+    setLoading(true);
     try {
       const { data } = await axios.get('/api/admin/dashboard');
       data.success ? setDashboardData(data.dashboardData) : toast.error(data.message);
     } catch (error) {
       toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -28,6 +33,10 @@ const Dashboard = () => {
     fetchDashboard()
  
   },[])
+
+  if (loading) {
+    return <Loader text="Loading dashboard..." />;
+  }
 
   return (
     <div className='flex-1 p-4 md:p-10 bg-blue-50/50'>

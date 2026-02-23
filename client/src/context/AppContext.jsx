@@ -12,6 +12,7 @@ export const AppProvider = ({ children }) => {
     const navigate = useNavigate();
 
     const [token, setToken] = useState(null);
+    const [user, setUser] = useState(null);
     const [blogs, setBlogs] = useState([]);
     const [input, setInput] = useState("");
 
@@ -27,13 +28,23 @@ export const AppProvider = ({ children }) => {
     useEffect(() => {
         fetchBlogs();
         const token = localStorage.getItem('token');
+        const user = localStorage.getItem('user');
+        
         if (token) {
             setToken(token);
             axios.defaults.headers.common['Authorization'] = `${token}`;
         }
-    }, []); const value = {
+        
+        if (user) {
+            setUser(JSON.parse(user));
+        }
+    }, []); 
+
+    const value = {
         token,
         setToken,
+        user,
+        setUser,
         blogs,
         setBlogs,
         input,

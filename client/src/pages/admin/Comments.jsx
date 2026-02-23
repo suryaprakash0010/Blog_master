@@ -1,21 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import CommentTableItem from '../../components/admin/CommentTableItem'
+import Loader from '../../components/Loader'
 import { useAppContext } from '../../context/AppContext'
 import toast from 'react-hot-toast'
 
 const Comments = () => {
 
+  const [loading, setLoading] = useState(false);
   const [comments, setComments] = useState([])
   const [filter, setFilter] = useState('Not Approved')
 
   const { axios } = useAppContext()
 
   const fetchComments = async () => {
+    setLoading(true);
     try {
       const { data } = await axios.get('/api/admin/comments')
       data.success ? setComments(data.comments) : toast.error(data.message)
     } catch (error) {
       toast.error(error.message)
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -23,6 +28,10 @@ const Comments = () => {
     fetchComments()
   
   }, [])
+
+  if (loading) {
+    return <Loader text="Loading comments..." />;
+  }
 
   return (
     <div className='flex-1 pt-5 px-5 sm:pt-12 sm:pl-16 bg-blue-50/50'>

@@ -14,13 +14,18 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
+    unique: true,
     lowercase: true,
     trim: true
-    // unique: true ❌ Removed to allow overwrite or duplicates
   },
   password: {
     type: String,
     required: true
+  },
+  role: {
+    type: String,
+    enum: ['user', 'admin'],
+    default: 'user'
   }
 }, {
   timestamps: true // Adds createdAt and updatedAt
