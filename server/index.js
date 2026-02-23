@@ -1,63 +1,28 @@
-import React, { useEffect, useState } from 'react'
-import { comments_data } from '../../assets/assets'
-import CommentTableItem from '../../components/admin/CommentTableItem'
-import { useAppContext } from '../../context/AppContext'
-import { toast } from "react-toastify";
+import express from 'express';
+import 'dotenv/config';
+import cors from 'cors';
+import connectDB from './configs/db.js';
+import adminRouter from './routes/adminRoutes.js';
+import blogRouter from './routes/blogRoutes.js';
+import authRouter from './routes/authRoutes.js';
 
+const app = express();
 
-const Comments = () => {
+await connectDB();
 
-  const [comments,setComments] = useState([])
-  const [filter,setFilter] = useState('Not Approved')
+app.use(cors());
+app.use(express.json());
 
-  const {axios} = useAppContext();
+app.get('/', (req, res) => {
+  res.send('Welcome to the API!');
+});
 
+app.use('/api/auth', authRouter);
+app.use('/api/admin', adminRouter);
+app.use('/api/blog', blogRouter);
 
-  const fetchComments = async () =>{
+const PORT = process.env.PORT || 3000;
 
-try {
-   const {data} = await axios.get('/api/admin/comments', { withCredentials: true })
-   data.success ? setComments(data.comments) : toast.error(data.message)
-} catch (error) {
-  toast.error(error?.response?.data?.message || error.message)
-  
-}  }
-
-  useEffect(()=>{
-    fetchComments()
-  },[])
-
-  return (
-    <div className='flex-1 pt-5 px-5 sm:pt-12 sm:lp-16vbg-blue-50/50'>
-      <div className='flex justify-between items-center max-w-3xl'>
-        <h1>Comments</h1>
-         <div className='flex gap-4'>
-
-          <button onClick={()=> setFilter('Approved')} className={`shadow-custom-sm border rounded-full px-4 py-1 cursor-pointer text-xs ${filter === 'Approved' ? 'text-primary' : 'text-gray-700'}`}>Approved</button>
-
-          <button onClick={()=> setFilter('Not Approved')} className={`shadow-custom-sm border rounded-full px-4 py-1 cursor-pointer text-xs ${filter === 'Not Approved' ? 'text-primary' : 'text-gray-700'}`}>Not Approved</button>
-
-         </div>
-      </div>
-      <div className='relative h-4/5 max-w-3xl overflow-x-auto mt-4 bg-white shadow rounded-lg scrollbar-hide'>
-        <table className='w-full text-sm text-gray-500'>
-        <thead className='text-xs text-gray-700 text-left uppercase'>
-          <tr>
-            <th scope='col' className='px-6 py-3'> Blog  Title  & Comment </th>
-            <th scope='col' className='px-6 py-3 max-sm:hidden'> Date </th>
-            <th scope='col' className='px-6 py-3'> Action </th>
-          </tr>
-        </thead>
-        <tbody>
-         {comments.filter((comment)=>{
-          if(filter === "Approved") return comment.isApproved ===true;
-          return comment.isApproved === false;
-         }).map((comment,index)=> <CommentTableItem key={comment._id} comment={comment} index={index+1} fetchComments={fetchComments}/>)}
-        </tbody>
-        </table>
-      </div>
-    </div>
-  )
-}
-
-export default Comments
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
