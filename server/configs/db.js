@@ -5,8 +5,6 @@ const connectDB = async () => {
         const conn = await mongoose.connect(`${process.env.MONGODB_URI}/quickblog`, {
             serverSelectionTimeoutMS: 5000,
             socketTimeoutMS: 45000,
-            bufferMaxEntries: 0,
-            bufferCommands: false,
         });
         
         mongoose.connection.on('connected', () => console.log('MongoDB connected successfully'));
